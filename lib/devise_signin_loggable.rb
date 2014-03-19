@@ -1,0 +1,3 @@
+module DeviseSigninLoggable
+  # Your code goes here...
+end
