@@ -6,11 +6,12 @@ Gem::Specification.new do |s|
   s.name        = "devise_signin_loggable"
   s.version     = DeviseSigninLoggable::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
+  s.authors     = ["Aaron Klaassen"]
+  s.email       = ["aaron@outerspacehero.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Log your users' sign-ins.}
+  s.description = %q{Every time a user signs in, log the time and IP.}
+  s.license     = "MIT"
 
   s.rubyforge_project = "devise_signin_loggable"
 
@@ -18,4 +19,8 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+
+  s.add_dependency 'confiture', '~> 0.1.4'
+
+  s.add_development_dependency 'rspec', '~> 2.14.1'
 end
