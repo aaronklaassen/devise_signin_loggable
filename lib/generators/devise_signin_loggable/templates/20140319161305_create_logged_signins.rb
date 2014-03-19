@@ -4,7 +4,6 @@ class CreateLoggedSignins < ActiveRecord::Migration
       
       t.references :resource, polymorphic: true
       t.string     :ip_address
-      t.boolean    :success
 
       t.timestamps
     end
