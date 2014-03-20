@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Aaron Klaassen"]
   s.email       = ["aaron@outerspacehero.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/aaronklaassen/devise_signin_loggable"
   s.summary     = %q{Log your users' sign-ins.}
   s.description = %q{Every time a user signs in, log the time and IP.}
   s.license     = "MIT"
