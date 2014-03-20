@@ -19,6 +19,7 @@ RSpec.configure do |config|
       t.timestamps
     end
 
+    # A stub for the specs.
     create_table :users do |t|
     end
     

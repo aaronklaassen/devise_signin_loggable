@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe DeviseSigninLoggable::LoggedSignin do
+describe Devise::Models::LoggedSignin do
 
   def create_logged_signin(user, weeks_old = 0)
-    log = DeviseSigninLoggable::LoggedSignin.new
+    log = Devise::Models::LoggedSignin.new
     log.resource = user
     log.ip_address = "127.0.0.1"
     log.created_at = weeks_old.weeks.ago
@@ -14,11 +14,12 @@ describe DeviseSigninLoggable::LoggedSignin do
   before :each do
     @user = User.create!
     9.times { |i| create_logged_signin(@user, i) }
+    5.times { |i| create_logged_signin(User.create!, i) }
   end
 
   after :each do
     User.destroy_all
-    DeviseSigninLoggable::LoggedSignin.destroy_all
+    Devise::Models::LoggedSignin.destroy_all
   end
 
   describe "associations" do
@@ -32,10 +33,10 @@ describe DeviseSigninLoggable::LoggedSignin do
         @user.stub(:remove_logged_signins_older_than).and_return(4.weeks.ago)
         expect {
           create_logged_signin(@user)
-        }.to change(DeviseSigninLoggable::LoggedSignin, :count).by(-4)
+        }.to change(Devise::Models::LoggedSignin, :count).by(-4)
 
         cutoff = @user.remove_logged_signins_older_than
-        old = DeviseSigninLoggable::LoggedSignin.where("created_at <= ?", cutoff)
+        old = Devise::Models::LoggedSignin.where("resource_id = ? AND created_at <= ?", @user.id, cutoff)
         old.size.should be_zero
       end
     end
@@ -45,7 +46,7 @@ describe DeviseSigninLoggable::LoggedSignin do
         @user.stub(:remove_logged_signins_older_than).and_return(nil)
         expect {
           create_logged_signin(@user)
-        }.to change(DeviseSigninLoggable::LoggedSignin, :count).by(1)
+        }.to change(Devise::Models::LoggedSignin, :count).by(1)
       end
     end
 
@@ -53,14 +54,15 @@ describe DeviseSigninLoggable::LoggedSignin do
       it "deletes logged signins when there are too many" do
         @user.stub(:max_logged_signins_per_user).and_return(7)
         create_logged_signin(@user)
-        DeviseSigninLoggable::LoggedSignin.count.should == 7
+        Devise::Models::LoggedSignin.by_resource(@user).count.should == 7
+        Devise::Models::LoggedSignin.count.should == 12
       end
 
       it "deletes the oldest signins and keeps the newest ones" do
         @user.stub(:max_logged_signins_per_user).and_return(7)
-        all_logins = DeviseSigninLoggable::LoggedSignin.by_resource(@user)
+        all_logins = Devise::Models::LoggedSignin.by_resource(@user).to_a
         new_log = create_logged_signin(@user)
-        DeviseSigninLoggable::LoggedSignin.by_resource(@user).should == all_logins.last(7)
+        Devise::Models::LoggedSignin.by_resource(@user).should == all_logins.last(6) + [new_log]
       end
     end
 
@@ -69,7 +71,7 @@ describe DeviseSigninLoggable::LoggedSignin do
         @user.stub(:max_logged_signins_per_user).and_return(nil)
         expect {
           create_logged_signin(@user)
-        }.to change(DeviseSigninLoggable::LoggedSignin, :count).by(1)
+        }.to change(Devise::Models::LoggedSignin, :count).by(1)
       end
     end
 
