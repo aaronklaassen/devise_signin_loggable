@@ -1,6 +1,6 @@
 require 'active_record'
-require 'devise'
 require 'shoulda'
+require 'pry'
 require 'devise_signin_loggable'
 
 RSpec.configure do |config|
@@ -10,6 +10,7 @@ RSpec.configure do |config|
   ActiveRecord::Schema.define do
     self.verbose = false
 
+    # See the generator migration.
     create_table :logged_signins do |t|
       
       t.references :resource, polymorphic: true
@@ -17,6 +18,11 @@ RSpec.configure do |config|
 
       t.timestamps
     end
+
+    create_table :users do |t|
+    end
     
   end
 end
+
+class User < ActiveRecord::Base; end

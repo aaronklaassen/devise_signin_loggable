@@ -16,8 +16,8 @@ module DeviseSigninLoggable
     def default_devise_settings
       settings = <<-eof
   # ==> Signin logging Configuration 
-  # config.max_signin_logs_per_user = 50
-  # config.remove_signin_logs_older_than = 1.year
+  # config.max_logged_signins_per_user = 50
+  # config.remove_logged_signins_older_than = 1.year
   
       eof
      
