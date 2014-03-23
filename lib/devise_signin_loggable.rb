@@ -13,14 +13,15 @@ module Devise
 end
 
 Warden::Manager.after_authentication do |user,auth,opts|
-  log = Devise::Models::LoggedSignin.new
-  log.resource = user
-  log.ip_address = auth.request.remote_ip
-  log.save
+
+  # This can't be the right way to do this.
+  if user.class.ancestors.any? { |a| a.to_s.include?("SigninLoggable") }
+  
+    log = Devise::Models::LoggedSignin.new
+    log.resource = user
+    log.ip_address = auth.request.remote_ip
+    log.save
+  end
 end
 
- Devise.add_module(:signin_loggable,
-#                   #:route => :session, ## This will add the routes, rather than in the routes.rb
-#                   #:strategy   => true,
-#                   #:controller => :sessions,
-                   :model  => 'devise_signin_loggable/model')
+Devise.add_module(:signin_loggable, :model  => 'devise_signin_loggable/model')
