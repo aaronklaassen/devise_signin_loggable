@@ -12,16 +12,13 @@ module Devise
       private
 
       def remove_old_signins
+        by_user = Devise::Models::LoggedSignin.by_resource(resource)
 
-        belonging_to_user = Devise::Models::LoggedSignin.by_resource(resource)
+        min_date = resource.class.remove_logged_signins_older_than
+        max_signins = resource.class.max_logged_signins_per_user
 
-        if resource.remove_logged_signins_older_than
-          belonging_to_user.where("created_at <= ?", resource.remove_logged_signins_older_than).destroy_all
-        end
-
-        if resource.max_logged_signins_per_user
-          belonging_to_user.reverse_order.offset(resource.max_logged_signins_per_user).destroy_all
-        end
+        by_user.where("created_at <= ?", min_date).destroy_all if min_date
+        by_user.reverse_order.offset(max_signins).destroy_all if max_signins
       end
     end
   end

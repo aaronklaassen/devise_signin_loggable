@@ -27,6 +27,6 @@ RSpec.configure do |config|
 end
 
 class User < ActiveRecord::Base;
-  def remove_logged_signins_older_than; end
-  def max_logged_signins_per_user; end
+  def self.remove_logged_signins_older_than; end
+  def self.max_logged_signins_per_user; end
 end
