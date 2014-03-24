@@ -1,5 +1,7 @@
 # devise\_signin\_loggable
 
+Every time a user signs in, log the time and IP.
+
 ## Installation
 
 Add this to your Gemfile:
@@ -30,7 +32,7 @@ the list of included devise modules:
 ## Configuration
 
 Since a table of every signin by every user can obviously grow quickly, there
-are two options to clear out old data. Either by limiting the number of signins
+are two options to clear out old data: either by limiting the number of signins
 stored per user, or by only keeping signins less than a given age.
 
 In `devise.rb`, the generator adds the following lines:
