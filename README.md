@@ -24,7 +24,7 @@ After installation, run in the install generator and migrations:
     rails generate devise_signin_loggable:install
     rake db:migrate
 
-The user models for which you want to log signins, add `:signin_loggable` to
+In the user models for which you want to log signins, add `:signin_loggable` to
 the list of included devise modules:
 
     devise :signin_loggable
